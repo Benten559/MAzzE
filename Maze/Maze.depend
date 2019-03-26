@@ -171,13 +171,14 @@
 	<wall.h>
 	<iostream>
 
-1553636437 source:c:\users\ben's pc\desktop\mazze\maze\main.cpp
+1553643399 source:c:\users\ben's pc\desktop\mazze\maze\main.cpp
 	<string.h>
 	<CommonThings.h>
 	<Maze.h>
 	<iostream>
 	<Timer.h>
 	<player.h>
+	<cmath>
 	<GLUT/glut.h>
 	<GL/glut.h>
 	<stdlib.h>

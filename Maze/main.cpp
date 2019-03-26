@@ -9,6 +9,7 @@
 #include <iostream>
 #include <Timer.h>
 #include <player.h>
+#include <cmath>
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -26,18 +27,27 @@
 
 using namespace std;
 //WALL RUN-IN
-void wallCheck(Player *p, wall *w){
+bool wallCheck(Player *p, wall *w){
+    bool collision = false;
     for (int i = 0; i < 100; i++){
-        if (p->getPlayerLoc().x == w[i].GetWallLoc.x){
-             if (p->getPlayerLoc().y == w[i].GetWallLoc.x){
-            cout << "Ran into Wall\n" ;
+        if ((p->getPlayerLoc().x == w[i].GetWallLoc.x) &&(p->getPlayerLoc().y == w[i].GetWallLoc.y)){
+            // if (p->getPlayerLoc().y == w[i].GetWallLoc.y){
+               return collision;
              }
         }
-
+    return true;
     }
-}
 
 //WALL RUN-IN
+//Maze Graph
+int graph(int i, int z){
+    double half = 1/2;
+    double y=i,x= z,r;
+    r = pow((pow(x,2)+pow(y,2)),half);
+    return (int) r;
+
+}
+//Maze Graph
 Maze *M = new Maze(20);                         // Set Maze grid size
 Player *P = new Player();                       // create player
 
@@ -96,16 +106,18 @@ void init()
     for(int i=1; i< M->getGridSize();i++)
     {
       W[i].wallInit(M->getGridSize(),"images/wall.png");// Load walls
-      W[i].placeWall(i,5);
-      if (i > 5){ W[i].placeWall(i,8);}                           // place each brick 1==y coor
-      cout << W[i].GetWallLoc.y << endl;
+      W[i].placeWall(i,6);
+      if (i > 6 && i < 10) {
+            W[i].placeWall(6,i);
+            //W[i].placeWall(7,i);
+      }
+      else if (i == 10 && i < 20){
+        W[i].placeWall(i,i);
+      }
        /* W2[i].wallInit(M->getGridSize(),"images/wall.png");
         W2[i].placeWall(0,i);*/
     }
 
-for (int i = 0; i < M->getGridSize();i++){
-    cout << W[i].GetWallLoc.y << endl;
-}
 
     for(int i=0; i<10;i++)
     {
@@ -242,8 +254,6 @@ void Specialkeys(int key, int x, int y)
          cout<< P->getPlayerLoc().x<<" " /*<< W->GetWallLoc.x  <<"  "*/<<P->getPlayerLoc().y<<endl;
          P->movePlayer("up");
          wallCheck(P,W);
-        /* if ((P->getPlayerLoc().x == W->GetWallLoc.x) || (P->getPlayerLoc().y == W->GetWallLoc.y)){
-        cout << "Ran into wall\n";}*/
          E[0].moveEnemy("up");
          E[1].moveEnemy("left");
          E[2].moveEnemy("up");
@@ -251,15 +261,20 @@ void Specialkeys(int key, int x, int y)
 
     case GLUT_KEY_DOWN:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
+         if(wallCheck(P,W)) {
          P->movePlayer("down");
+
+         //P->movePlayer("down");
+         //wallCheck(P,W);
          E[0].moveEnemy("down");
          E[1].moveEnemy("down");
-         E[2].moveEnemy("down");
+         E[2].moveEnemy("down"); }
     break;
 
     case GLUT_KEY_LEFT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
          P->movePlayer("left");
+         //wallCheck(P,W);
          E[0].moveEnemy("left");
          E[1].moveEnemy("left");
          E[2].moveEnemy("left");
@@ -269,6 +284,7 @@ void Specialkeys(int key, int x, int y)
     case GLUT_KEY_RIGHT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
          P->movePlayer("right");
+         //wallCheck(P,W);
          E[0].moveEnemy("right");
          E[1].moveEnemy("right");
          E[2].moveEnemy("right");
