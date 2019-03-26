@@ -252,20 +252,19 @@ void Specialkeys(int key, int x, int y)
     {
     case GLUT_KEY_UP:
          cout<< P->getPlayerLoc().x<<" " /*<< W->GetWallLoc.x  <<"  "*/<<P->getPlayerLoc().y<<endl;
-         P->movePlayer("up");
+         if (wallCheck(P,W)){
+            P->movePlayer("up");
          wallCheck(P,W);
          E[0].moveEnemy("up");
          E[1].moveEnemy("left");
          E[2].moveEnemy("up");
+         }
     break;
 
     case GLUT_KEY_DOWN:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
          if(wallCheck(P,W)) {
          P->movePlayer("down");
-
-         //P->movePlayer("down");
-         //wallCheck(P,W);
          E[0].moveEnemy("down");
          E[1].moveEnemy("down");
          E[2].moveEnemy("down"); }
@@ -273,21 +272,26 @@ void Specialkeys(int key, int x, int y)
 
     case GLUT_KEY_LEFT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
+         if (wallCheck(P,W)){
          P->movePlayer("left");
          //wallCheck(P,W);
          E[0].moveEnemy("left");
          E[1].moveEnemy("left");
          E[2].moveEnemy("left");
+         }
 
     break;
 
     case GLUT_KEY_RIGHT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
-         P->movePlayer("right");
+         if(wallCheck(P,W)){
+            P->movePlayer("right");
          //wallCheck(P,W);
          E[0].moveEnemy("right");
          E[1].moveEnemy("right");
          E[2].moveEnemy("right");
+         }
+
     break;
 
    }
