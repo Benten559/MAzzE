@@ -254,10 +254,12 @@ void Specialkeys(int key, int x, int y)
          cout<< P->getPlayerLoc().x<<" " /*<< W->GetWallLoc.x  <<"  "*/<<P->getPlayerLoc().y<<endl;
          if (wallCheck(P,W)){
             P->movePlayer("up");
-         wallCheck(P,W);
          E[0].moveEnemy("up");
          E[1].moveEnemy("left");
          E[2].moveEnemy("up");
+         }
+         else if (!wallCheck(P,W)){
+            P->movePlayer("down");
          }
     break;
 
@@ -267,7 +269,11 @@ void Specialkeys(int key, int x, int y)
          P->movePlayer("down");
          E[0].moveEnemy("down");
          E[1].moveEnemy("down");
-         E[2].moveEnemy("down"); }
+         E[2].moveEnemy("down");
+         }
+         else if (!wallCheck(P,W)){
+            P->movePlayer("up");
+         }
     break;
 
     case GLUT_KEY_LEFT:
