@@ -162,7 +162,7 @@ void Player::initPlayer(int gSize,int frams, char *FileName)
     ymin =0;
 
     unitWidth = (float)2/gridSize;
-    stepsPerMove = frames;
+    stepsPerMove =/*1;*/ frames;
 
     T->Start();
     plyLoc.x= -unitWidth;
@@ -189,7 +189,7 @@ void Player::movePlayer(char* dir)
         if(T->GetTicks()>10)
         {
             if(plyLoc.x>-1+unitWidth/2)
-                plyLoc.x -= t;
+                plyLoc.x -= t;//.025;
             if(xmax>=1){
                 xmax =1/(float)frames;
                 xmin =0;
@@ -273,6 +273,22 @@ GridLoc Player::getPlayerLoc()
 
 }
 
+GridLoc Player::getPlayerLocForC(char* dir)
+{
+   float offset = 2*t;
+      GridLoc val;
+   if(strcmp("up",dir))
+   {
+   val.x = (int)(ceil((plyLoc.x +(1-unitWidth))/unitWidth));
+   val.y = (int)(ceil((plyLoc.y+offset)));// +(1-unitWidth))/unitWidth));
+   }
+
+ //  else if()
+
+   return val;
+}
+
+
 loc Player::converter(int x, int y)
 {
   loc val;
@@ -283,3 +299,5 @@ loc Player::converter(int x, int y)
        val.y = -1-unitWidth/2+(unitWidth)*y;
        return val;
 }
+
+

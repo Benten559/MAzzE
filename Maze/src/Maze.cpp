@@ -16,7 +16,7 @@ Maze::Maze(int gSize)                                        // Constructor
     //ctor
     gridSize =gSize;
 
-    unitWidth = (float)2/gridSize;
+    unitWidth = (float)2/gridSize;//replaced 2 with 2.5
     liveChest = true;
     liveSetOfArrws=true;
 }

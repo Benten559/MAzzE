@@ -55,6 +55,7 @@
 		<Unit filename="include/Enemies.h" />
 		<Unit filename="include/Maze.h" />
 		<Unit filename="include/Timer.h" />
+		<Unit filename="include/matrix.h" />
 		<Unit filename="include/player.h" />
 		<Unit filename="include/wall.h" />
 		<Unit filename="main.cpp" />

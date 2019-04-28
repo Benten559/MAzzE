@@ -2,7 +2,7 @@
  * MAZE Game Framework
  * Written by Dr. Dhanyu Amarasinghe Spring 2018
  */
-
+#include "matrix.h"
 #include <string.h>
 #include <CommonThings.h>
 #include <Maze.h>
@@ -22,37 +22,46 @@
 
 #include <wall.h>
 #include <math.h>
+#include <cstdlib>
 
 /* GLUT callback Handlers */
 
 using namespace std;
 //WALL RUN-IN
-bool wallCheck(Player *p, wall *w){
-    bool collision = false;
-    for (int i = 0; i < 100; i++){
-        if ((p->getPlayerLoc().x == w[i].GetWallLoc.x) &&(p->getPlayerLoc().y == w[i].GetWallLoc.y)){
-            // if (p->getPlayerLoc().y == w[i].GetWallLoc.y){
-               return collision;
-             }
+bool wallCheck(Player *p, int direc,matrix<bool> grid){
+            int a = p->getPlayerLoc().x;
+            int b = p->getPlayerLoc().y;
+    switch(direc){
+        case GLUT_KEY_UP:
+            if((a)>=0 && b+1<20){
+                cout << p->getPlayerLocForC("up").x<< endl;
+            return (grid.getVal(a,b+1));// cout << "wall\n";
+            }
+        case GLUT_KEY_DOWN:
+            if ((b-1)<20 && (b-1)>=0)
+            return (grid.getVal(a,b-1));
+        case GLUT_KEY_LEFT:
+            if ((a-1)<20 && (a-1)>=0)
+            return (grid.getVal(a-1,b));
+        case GLUT_KEY_RIGHT:
+            if ((a+1)<20 && (a+1)>=0)
+            return (grid.getVal(a+1,b));
         }
-    return true;
-    }
-
-//WALL RUN-IN
-//Maze Graph
-int graph(int i, int z){
-    double half = 1/2;
-    double y=i,x= z,r;
-    r = pow((pow(x,2)+pow(y,2)),half);
-    return (int) r;
 
 }
+
+
+
+
+//WALL RUN-IN
+
 //Maze Graph
 Maze *M = new Maze(20);                         // Set Maze grid size
 Player *P = new Player();                       // create player
-
+//MATRIX FOR WALL CHECK
+matrix<bool> wallGrid(20);
 wall W[100];
-wall W2[100];                                    // wall with number of bricks
+//wall W2[100];                                    // wall with number of bricks
 Enemies E[10];                                  // create number of enemies
 Timer *T0 = new Timer();                        // animation timer
 
@@ -99,25 +108,23 @@ void init()
     M->loadSetOfArrowsImage("images/arrwset.png");      // load set of arrows image
     M->placeStArrws(5,3);                               // place set of arrows
 
-    P->initPlayer(M->getGridSize(),6,"images/p.png");   // initialize player pass grid size,image and number of frames
+    P->initPlayer(M->getGridSize(),6,"images/p.png");//10   // initialize player pass grid size,image and number of frames
     P->loadArrowImage("images/arr.png");                // Load arrow image
     P->placePlayer(9,9);                                // Place player
 
-    for(int i=1; i< M->getGridSize();i++)
-    {
-      W[i].wallInit(M->getGridSize(),"images/wall.png");// Load walls
-      W[i].placeWall(i,6);
-      if (i > 6 && i < 10) {
-            W[i].placeWall(6,i);
-            //W[i].placeWall(7,i);
-      }
-      else if (i == 10 && i < 20){
-        W[i].placeWall(i,i);
-      }
-       /* W2[i].wallInit(M->getGridSize(),"images/wall.png");
-        W2[i].placeWall(0,i);*/
-    }
 
+    for (int i = 0; i<100;i++){
+      W[i].wallInit(M->getGridSize(),"images/wall.png");
+
+      if (i < 5){
+        W[i].placeWall(10,10);
+        wallGrid.insert(10,10,true);
+      }
+      else if (i < 15){
+        W[i].placeWall(i,i);
+        wallGrid.insert(i,i,true);
+      }
+    }
 
     for(int i=0; i<10;i++)
     {
@@ -251,34 +258,28 @@ void Specialkeys(int key, int x, int y)
     switch(key)
     {
     case GLUT_KEY_UP:
-         cout<< P->getPlayerLoc().x<<" " /*<< W->GetWallLoc.x  <<"  "*/<<P->getPlayerLoc().y<<endl;
-         if (wallCheck(P,W)){
+         cout<< P->getPlayerLoc().x<<"     "<<P->getPlayerLoc().y<<endl;
+         if (!wallCheck(P,GLUT_KEY_UP,wallGrid)){
             P->movePlayer("up");
          E[0].moveEnemy("up");
          E[1].moveEnemy("left");
          E[2].moveEnemy("up");
          }
-         else if (!wallCheck(P,W)){
-            P->movePlayer("down");
-         }
     break;
 
     case GLUT_KEY_DOWN:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
-         if(wallCheck(P,W)) {
+         if(!wallCheck(P,GLUT_KEY_DOWN,wallGrid)) {
          P->movePlayer("down");
          E[0].moveEnemy("down");
          E[1].moveEnemy("down");
          E[2].moveEnemy("down");
          }
-         else if (!wallCheck(P,W)){
-            P->movePlayer("up");
-         }
     break;
 
     case GLUT_KEY_LEFT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
-         if (wallCheck(P,W)){
+         if (!wallCheck(P,GLUT_KEY_LEFT,wallGrid)){
          P->movePlayer("left");
          //wallCheck(P,W);
          E[0].moveEnemy("left");
@@ -290,7 +291,7 @@ void Specialkeys(int key, int x, int y)
 
     case GLUT_KEY_RIGHT:
          cout<< P->getPlayerLoc().x<< "    "<<P->getPlayerLoc().y<<endl;
-         if(wallCheck(P,W)){
+         if (!wallCheck(P,GLUT_KEY_RIGHT,wallGrid)){
             P->movePlayer("right");
          //wallCheck(P,W);
          E[0].moveEnemy("right");

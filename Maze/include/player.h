@@ -35,6 +35,8 @@ class Player
         GridLoc getPlayerLoc();            // player current location
         GridLoc getArrowLoc();             // arrow current location
 
+        GridLoc getPlayerLocForC(char *dir );
+
         int frames;                        // Number of frames for animation
         char *playerDir;                   // direction of player face
 
