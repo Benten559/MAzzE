@@ -35,13 +35,14 @@ class Player
         GridLoc getPlayerLoc();            // player current location
         GridLoc getArrowLoc();             // arrow current location
 
-        GridLoc getPlayerLocForC(char *dir );
+        Funcloc getPlayerLocForC(char *dir );
 
         int frames;                        // Number of frames for animation
         char *playerDir;                   // direction of player face
 
         bool arrowStatus;                  // arrow is active or not
         bool livePlayer;                   // Player live or dead
+        void die();
     protected:
 
         float t;                           // Ticker for animation

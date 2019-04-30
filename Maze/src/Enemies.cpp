@@ -23,6 +23,7 @@ Enemies::Enemies()
     ymin =0;
     up= down = left=right=false;
     live = true;
+   // AL egrid(4);
 
 }
 

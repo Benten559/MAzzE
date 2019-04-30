@@ -11,6 +11,7 @@
 #include <thread>
 #include <string>
 #include <math.h>       /* ceil */
+#include "adjL.h"
 
 class Enemies
 {
@@ -30,6 +31,8 @@ class Enemies
         float unitWidth;                    // Unit width of the grid
         int stepsPerMove;                   // Step count for animation
         bool live;                          // Status of the Enemy
+//        AL egrid = egrid(5);
+
     protected:
 
     private:

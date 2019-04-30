@@ -22,6 +22,11 @@ typedef struct
 
 typedef struct
 {
+    float x;
+    float y;
+}Funcloc;
+typedef struct
+{
   int x;
   int y;
 }GridLoc;

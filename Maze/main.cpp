@@ -10,6 +10,7 @@
 #include <Timer.h>
 #include <player.h>
 #include <cmath>
+#include "adjL.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -31,21 +32,45 @@ using namespace std;
 bool wallCheck(Player *p, int direc,matrix<bool> grid){
             int a = p->getPlayerLoc().x;
             int b = p->getPlayerLoc().y;
+            float dif = 0;
+            float holder = 0;
+            float var = 0;
     switch(direc){
         case GLUT_KEY_UP:
-            if((a)>=0 && b+1<20){
-                cout << p->getPlayerLocForC("up").x<< endl;
-            return (grid.getVal(a,b+1));// cout << "wall\n";
+            if((a)>=0 && b+1<20){ //Checks the bounds to make sure still in maze
+            if(grid.getVal(a,b+1)){ //checks the boolean grid to see if there  is a wall ahead
+                var = p->getPlayerLocForC("up").y;//assigns the float-type coordinate ***offset can be adjusted***
+                holder = b;                         //assigns the y value as a float
+                dif = holder - var;            //this is the value of distance between player and wall
+                if (dif <.1) return true; //If close enough to wall STOP
+               }
             }
         case GLUT_KEY_DOWN:
-            if ((b-1)<20 && (b-1)>=0)
-            return (grid.getVal(a,b-1));
+            if ((b-1)<20 && (b-1)>=0){
+                if(grid.getVal(a,b-1)){
+                    var = p->getPlayerLocForC("down").y;
+                    holder = b;
+                    dif = var - holder;
+                    if (dif <.1) return true;
+                }
+            }
         case GLUT_KEY_LEFT:
-            if ((a-1)<20 && (a-1)>=0)
-            return (grid.getVal(a-1,b));
+            if ((a-1)<20 && (a-1)>=0){
+                if (grid.getVal(a-1,b)){
+                    var = p->getPlayerLocForC("left").x;
+                    holder = a;
+                    dif = var - holder;
+                    if (dif <.1) return true;
+                }
+            }
         case GLUT_KEY_RIGHT:
             if ((a+1)<20 && (a+1)>=0)
-            return (grid.getVal(a+1,b));
+                if(grid.getVal(a+1,b)){
+                    var = p->getPlayerLocForC("right").x;
+                    holder = a;
+                    dif = holder - var;
+                    if (dif <.1) return true;
+                }
         }
 
 }
@@ -60,9 +85,10 @@ Maze *M = new Maze(20);                         // Set Maze grid size
 Player *P = new Player();                       // create player
 //MATRIX FOR WALL CHECK
 matrix<bool> wallGrid(20);
-wall W[100];
+wall W[7];
 //wall W2[100];                                    // wall with number of bricks
 Enemies E[10];                                  // create number of enemies
+
 Timer *T0 = new Timer();                        // animation timer
 
 float wWidth, wHeight;                          // display window width and Height
@@ -113,18 +139,13 @@ void init()
     P->placePlayer(9,9);                                // Place player
 
 
-    for (int i = 0; i<100;i++){
-      W[i].wallInit(M->getGridSize(),"images/wall.png");
+    for (int i = 1; i<7;i++){
+        W[i].wallInit(M->getGridSize(),"images/wall.png");
+        W[i].placeWall(i,10);
+        wallGrid.insert(i,10,true);
+      }
 
-      if (i < 5){
-        W[i].placeWall(10,10);
-        wallGrid.insert(10,10,true);
-      }
-      else if (i < 15){
-        W[i].placeWall(i,i);
-        wallGrid.insert(i,i,true);
-      }
-    }
+
 
     for(int i=0; i<10;i++)
     {
@@ -143,7 +164,7 @@ void display(void)
         glPopMatrix();
 
 
-        for(int i=0; i<M->getGridSize();i++)
+        for(int i=0; i<7/*M->getGridSize()*/;i++)
         {
            W[i].drawWall();
         }

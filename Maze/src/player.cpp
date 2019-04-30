@@ -17,10 +17,14 @@ Player::Player()
     arrowStatus = false;
     livePlayer = true;
 }
-
+//die function
+/*void die(){
+livePlayer = false;
+}*/
+//
 Player::~Player()
 {
-    //dtor
+    delete T;//dtor
 }
 
 void Player::drawArrow()
@@ -273,18 +277,31 @@ GridLoc Player::getPlayerLoc()
 
 }
 
-GridLoc Player::getPlayerLocForC(char* dir)
+Funcloc Player::getPlayerLocForC(char* dir)
 {
-   float offset = 2*t;
-      GridLoc val;
-   if(strcmp("up",dir))
+    Funcloc val;
+   float offset = .25;
+
+   if(strcmp("up",dir)==0)
    {
-   val.x = (int)(ceil((plyLoc.x +(1-unitWidth))/unitWidth));
-   val.y = (int)(ceil((plyLoc.y+offset)));// +(1-unitWidth))/unitWidth));
+   val.x = ((plyLoc.x +(1-unitWidth))/unitWidth);
+   val.y = ((plyLoc.y +(1-unitWidth))/unitWidth)+offset;
    }
-
- //  else if()
-
+   if(strcmp("down",dir)==0)
+   {
+   val.x = ((plyLoc.x +(1-unitWidth))/unitWidth);
+   val.y = ((plyLoc.y +(1-unitWidth))/unitWidth)+offset;
+   }
+   if(strcmp("left",dir)==0)
+   {
+   val.x = ((plyLoc.x +(1-unitWidth))/unitWidth)+offset;
+   val.y = ((plyLoc.y +(1-unitWidth))/unitWidth);
+   }
+   if(strcmp("right",dir)==0)
+   {
+   val.x = ((plyLoc.x +(1-unitWidth))/unitWidth)+offset;
+   val.y = ((plyLoc.y +(1-unitWidth))/unitWidth);
+   }
    return val;
 }
 
