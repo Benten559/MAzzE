@@ -280,27 +280,35 @@ GridLoc Player::getPlayerLoc()
 Funcloc Player::getPlayerLocForC(char* dir)
 {
     Funcloc val;
-   float offset = .25;
+   float offset = .2;
 
    if(strcmp("up",dir)==0)
    {
    val.x = ((plyLoc.x +(1-unitWidth))/unitWidth);
    val.y = ((plyLoc.y +(1-unitWidth))/unitWidth)+offset;
+   cout <<"real x value : " <<val.x<< endl;
+   cout <<"real y value : " <<val.y<< endl;
    }
    if(strcmp("down",dir)==0)
    {
    val.x = ((plyLoc.x +(1-unitWidth))/unitWidth);
    val.y = ((plyLoc.y +(1-unitWidth))/unitWidth)+offset;
+   cout <<"real x value : " <<val.x<< endl;
+   cout <<"real y value : " <<val.y<< endl;
    }
    if(strcmp("left",dir)==0)
    {
    val.x = ((plyLoc.x +(1-unitWidth))/unitWidth)+offset;
    val.y = ((plyLoc.y +(1-unitWidth))/unitWidth);
+   cout <<"real x value : " <<val.x<< endl;
+   cout <<"real y value : " <<val.y<< endl;
    }
    if(strcmp("right",dir)==0)
    {
    val.x = ((plyLoc.x +(1-unitWidth))/unitWidth)+offset;
    val.y = ((plyLoc.y +(1-unitWidth))/unitWidth);
+   cout <<"real x value : " <<val.x<< endl;
+   cout <<"real y value : " <<val.y<< endl;
    }
    return val;
 }

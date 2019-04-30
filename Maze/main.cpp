@@ -42,7 +42,8 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                 var = p->getPlayerLocForC("up").y;//assigns the float-type coordinate ***offset can be adjusted***
                 holder = b;                         //assigns the y value as a float
                 dif = holder - var;            //this is the value of distance between player and wall
-                if (dif <.1) return true; //If close enough to wall STOP
+                cout << "dif value: "<<dif<< endl;
+                if (dif <.01) return true; //If close enough to wall STOP
                }
             }
         case GLUT_KEY_DOWN:
@@ -51,7 +52,8 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                     var = p->getPlayerLocForC("down").y;
                     holder = b;
                     dif = var - holder;
-                    if (dif <.1) return true;
+                    cout << "dif value: "<<dif<< endl;
+                    if (dif <.2) return true;
                 }
             }
         case GLUT_KEY_LEFT:
@@ -60,7 +62,8 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                     var = p->getPlayerLocForC("left").x;
                     holder = a;
                     dif = var - holder;
-                    if (dif <.1) return true;
+                    cout << "dif value: "<<dif<< endl;
+                    if (dif <.01) return true;
                 }
             }
         case GLUT_KEY_RIGHT:
@@ -69,7 +72,8 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                     var = p->getPlayerLocForC("right").x;
                     holder = a;
                     dif = holder - var;
-                    if (dif <.1) return true;
+                    cout << "dif value: "<<dif<< endl;
+                    if (dif <.01) return true;
                 }
         }
 
