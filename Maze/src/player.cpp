@@ -166,7 +166,7 @@ void Player::initPlayer(int gSize,int frams, char *FileName)
     ymin =0;
 
     unitWidth = (float)2/gridSize;
-    stepsPerMove =/*1;*/ frames;
+    stepsPerMove = frames/2;
 
     T->Start();
     plyLoc.x= -unitWidth;

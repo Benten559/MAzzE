@@ -11,6 +11,7 @@
 #include <player.h>
 #include <cmath>
 #include "adjL.h"
+#include <fstream>
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -37,17 +38,17 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
             float var = 0;
     switch(direc){
         case GLUT_KEY_UP:
-            if((a)>=0 && b+1<20){ //Checks the bounds to make sure still in maze
+            if((a)>=0 && b+1<15){ //Checks the bounds to make sure still in maze
             if(grid.getVal(a,b+1)){ //checks the boolean grid to see if there  is a wall ahead
                 var = p->getPlayerLocForC("up").y;//assigns the float-type coordinate ***offset can be adjusted***
                 holder = b;                         //assigns the y value as a float
                 dif = holder - var;            //this is the value of distance between player and wall
                 cout << "dif value: "<<dif<< endl;
-                if (dif <.01) return true; //If close enough to wall STOP
+                if (abs(dif) <.1) return true; //If close enough to wall STOP
                }
             }
         case GLUT_KEY_DOWN:
-            if ((b-1)<20 && (b-1)>=0){
+            if ((b-1)<15 && (b-1)>=0){
                 if(grid.getVal(a,b-1)){
                     var = p->getPlayerLocForC("down").y;
                     holder = b;
@@ -57,7 +58,7 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                 }
             }
         case GLUT_KEY_LEFT:
-            if ((a-1)<20 && (a-1)>=0){
+            if ((a-1)<15 && (a-1)>=0){
                 if (grid.getVal(a-1,b)){
                     var = p->getPlayerLocForC("left").x;
                     holder = a;
@@ -67,7 +68,7 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
                 }
             }
         case GLUT_KEY_RIGHT:
-            if ((a+1)<20 && (a+1)>=0)
+            if ((a+1)<15 && (a+1)>=0)
                 if(grid.getVal(a+1,b)){
                     var = p->getPlayerLocForC("right").x;
                     holder = a;
@@ -85,11 +86,11 @@ bool wallCheck(Player *p, int direc,matrix<bool> grid){
 //WALL RUN-IN
 
 //Maze Graph
-Maze *M = new Maze(20);                         // Set Maze grid size
+Maze *M = new Maze(15);                         // Set Maze grid size
 Player *P = new Player();                       // create player
 //MATRIX FOR WALL CHECK
-matrix<bool> wallGrid(20);
-wall W[7];
+matrix<bool> wallGrid(15);
+wall W[110];
 //wall W2[100];                                    // wall with number of bricks
 Enemies E[10];                                  // create number of enemies
 
@@ -140,14 +141,25 @@ void init()
 
     P->initPlayer(M->getGridSize(),6,"images/p.png");//10   // initialize player pass grid size,image and number of frames
     P->loadArrowImage("images/arr.png");                // Load arrow image
-    P->placePlayer(9,9);                                // Place player
+    P->placePlayer(0,1);                                // Place player
 
 
-    for (int i = 1; i<7;i++){
-        W[i].wallInit(M->getGridSize(),"images/wall.png");
-        W[i].placeWall(i,10);
-        wallGrid.insert(i,10,true);
-      }
+    //load maze
+int x = 0, y = 0, i = 0;
+fstream maz ("mz1.txt");
+
+while (maz&&i<110){
+        cout << "file open\n";
+    maz >> x >> y;
+    i++;
+
+    W[i].wallInit(M->getGridSize(),"images/wall.png");
+    W[i].placeWall(x,y);
+
+    wallGrid.insert(x,y,true);
+    //cout << "inserting: " <<"("<< x <<","<< y <<")" <<"index at: " <<i<<endl;
+//if (maz.eof()) break;
+}
 
 
 
@@ -168,7 +180,7 @@ void display(void)
         glPopMatrix();
 
 
-        for(int i=0; i<7/*M->getGridSize()*/;i++)
+        for(int i=0; i<110/*M->getGridSize()*/;i++)
         {
            W[i].drawWall();
         }
